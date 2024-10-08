@@ -29,10 +29,11 @@ SiLabs_Startup (void)
   // [SiLabs Startup]$
 }
 
-#define NO_INTERRUPT 0
-#define READ_INPUT 1
+#define MIN_VALUE 1
+#define MAX_VALUE 1023
 
-uint16_t adc_value = 0;
+volatile uint16_t adc_value = 0;
+volatile uint16_t voltage_mv = 0;
 
 //-----------------------------------------------------------------------------
 // main() Routine
@@ -42,14 +43,15 @@ int main (void)
   // Call hardware initialization routine
   enter_DefaultMode_from_RESET ();
 
-  P0_B0 = 0;
-  P0_B2 = 0;
-
   while (1)
   {
-      const uint16_t RESOLUTION = 1024.0;
+      const float RESOLUTION = 1024.0f;
       const uint16_t REF_VOLTAGE_MV = 3300;
 
-      uint16_t mv = adc_value * (REF_VOLTAGE_MV / RESOLUTION);
+      if (adc_value >= MIN_VALUE && adc_value <= MAX_VALUE) {
+    	  IE_EA = 1;
+          voltage_mv = adc_value * (REF_VOLTAGE_MV / RESOLUTION);
+          IE_EA = 0;
+      }
   }
 }

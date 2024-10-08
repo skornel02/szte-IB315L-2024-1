@@ -29,11 +29,13 @@ SiLabs_Startup (void)
   // [SiLabs Startup]$
 }
 
-#define NO_INTERRUPT 0
+#define REMOVE_INTERRUPT 0
 #define READ_INPUT 1
+#define MAX_PERCENTAGE 100
+#define MIN_PERCENTAGE 0
 
 uint16_t read_adc(void) {
-    ADC0CN0_ADINT = NO_INTERRUPT;
+    ADC0CN0_ADINT = REMOVE_INTERRUPT;
     ADC0CN0_ADBUSY = READ_INPUT;
     while (!ADC0CN0_ADINT);
 
@@ -48,25 +50,23 @@ int main (void)
   // Call hardware initialization routine
   enter_DefaultMode_from_RESET ();
 
-  P0_B0 = 0;
-  P0_B2 = 0;
-
   while (1)
   {
-      const uint16_t MIN_RESISTANCE = 100;
-      const uint16_t MAX_RESISTANCE = 1000;
+      const uint16_t MIN_RESISTANCE = 1;
+      const uint16_t MAX_RESISTANCE = 1023;
 
       uint16_t adc_value = read_adc();
 
       int percentage;
 
+      // Guard against math problems.
       if (adc_value < MIN_RESISTANCE)
       {
-          percentage = 0;
+          percentage = MIN_PERCENTAGE;
       }
       else if (adc_value > MAX_RESISTANCE)
       {
-          percentage = 100;
+          percentage = MAX_PERCENTAGE;
       }
       else
       {
