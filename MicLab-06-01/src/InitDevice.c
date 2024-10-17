@@ -62,15 +62,15 @@ PORTS_1_enter_DefaultMode_from_RESET (void)
    - P1.0 pin is configured for digital mode
    - P1.1 pin is configured for digital mode
    - P1.2 pin is configured for digital mode
-   - P1.3 pin is configured for digital mode
+   - P1.3 pin is configured for analog mode
    - P1.4 pin is configured for digital mode
    - P1.5 pin is configured for digital mode
    - P1.6 pin is configured for digital mode
-   - P1.7 pin is configured for analog mode
+   - P1.7 pin is configured for digital mode
    ***********************************************************************/
   P1MDIN = P1MDIN_B0__DIGITAL | P1MDIN_B1__DIGITAL | P1MDIN_B2__DIGITAL
-      | P1MDIN_B3__DIGITAL | P1MDIN_B4__DIGITAL | P1MDIN_B5__DIGITAL
-      | P1MDIN_B6__DIGITAL | P1MDIN_B7__ANALOG;
+      | P1MDIN_B3__ANALOG | P1MDIN_B4__DIGITAL | P1MDIN_B5__DIGITAL
+      | P1MDIN_B6__DIGITAL | P1MDIN_B7__DIGITAL;
   // [P1MDIN - Port 1 Input Mode]$
 
   // $[P1SKIP - Port 1 Skip]
@@ -78,15 +78,16 @@ PORTS_1_enter_DefaultMode_from_RESET (void)
    - P1.0 pin is not skipped by the crossbar
    - P1.1 pin is not skipped by the crossbar
    - P1.2 pin is not skipped by the crossbar
-   - P1.3 pin is not skipped by the crossbar
+   - P1.3 pin is skipped by the crossbar
    - P1.4 pin is not skipped by the crossbar
    - P1.5 pin is not skipped by the crossbar
    - P1.6 pin is not skipped by the crossbar
-   - P1.7 pin is skipped by the crossbar
+   - P1.7 pin is not skipped by the crossbar
    ***********************************************************************/
   P1SKIP = P1SKIP_B0__NOT_SKIPPED | P1SKIP_B1__NOT_SKIPPED
-      | P1SKIP_B2__NOT_SKIPPED | P1SKIP_B3__NOT_SKIPPED | P1SKIP_B4__NOT_SKIPPED
-      | P1SKIP_B5__NOT_SKIPPED | P1SKIP_B6__NOT_SKIPPED | P1SKIP_B7__SKIPPED;
+      | P1SKIP_B2__NOT_SKIPPED | P1SKIP_B3__SKIPPED | P1SKIP_B4__NOT_SKIPPED
+      | P1SKIP_B5__NOT_SKIPPED | P1SKIP_B6__NOT_SKIPPED
+      | P1SKIP_B7__NOT_SKIPPED;
   // [P1SKIP - Port 1 Skip]$
 
   // $[P1MASK - Port 1 Mask]
@@ -254,9 +255,9 @@ ADC_0_enter_DefaultMode_from_RESET (void)
 
   // $[ADC0MX - ADC0 Multiplexer Selection]
   /***********************************************************************
-   - Select ADC0.15
+   - Select ADC0.11
    ***********************************************************************/
-  ADC0MX = ADC0MX_ADC0MX__ADC0P15;
+  ADC0MX = ADC0MX_ADC0MX__ADC0P11;
   // [ADC0MX - ADC0 Multiplexer Selection]$
 
   // $[ADC0CF - ADC0 Configuration]

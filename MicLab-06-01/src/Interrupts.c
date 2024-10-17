@@ -10,7 +10,6 @@
 #include <SI_EFM8BB1_Register_Enums.h>
 
 #define CLEAR_FLAG(FLAG) FLAG = 0
-#define RIGHT_SHIFT 6
 
 extern volatile uint16_t adc_value;
 
@@ -26,7 +25,7 @@ SI_INTERRUPT (ADC0EOC_ISR, ADC0EOC_IRQn)
 {
   CLEAR_FLAG(ADC0CN0_ADINT);
 
-  adc_value = ADC0 >> RIGHT_SHIFT;
+  adc_value = ADC0;
   // Nem vagyok benne biztos miért volt fontos, hogy balra legyen igazítva
   // de pontosság vesztés helyett én inkább shiftelnék.
 }
