@@ -5,6 +5,7 @@
     <property object="DefaultMode" propertyId="mode.diagramLocation" value="100, 100"/>
     <property object="INTERRUPT_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enableallinterrupts" value="Enabled"/>
+    <property object="INTERRUPT_0" propertyId="interrupt.interruptenable.enabletimer2interrupt" value="Enabled"/>
     <property object="P0.0" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
     <property object="P0.0" propertyId="ports.settings.outputmode" value="Push-pull"/>
     <property object="P0.2" propertyId="ports.settings.iomode" value="Digital Push-Pull Output"/>
@@ -25,6 +26,16 @@
     <property object="SPI_0" propertyId="spi.control.slaveselectmode" value="Slave or master 3-wire mode"/>
     <property object="SPI_0" propertyId="spi.control.spienable" value="Enabled"/>
     <property object="SPI_0" propertyId="spi.view.view" value="Advanced"/>
+    <property object="TIMER01_0" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_2" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER16_2" propertyId="timer16.control.runcontrol" value="Start"/>
+    <property object="TIMER16_2" propertyId="timer16.control.timerrunningstate" value="Timer is Running"/>
+    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.targetoverflowfrequency" value="35"/>
+    <property object="TIMER16_2" propertyId="timer16.initandreloadvalue.timerreloadvalue" value="58244"/>
+    <property object="TIMER16_2" propertyId="timer16.reloadhighbyte.reloadhighbyte" value="227"/>
+    <property object="TIMER16_2" propertyId="timer16.reloadlowbyte.reloadlowbyte" value="132"/>
+    <property object="TIMER16_3" propertyId="ABPeripheral.included" value="true"/>
+    <property object="TIMER_SETUP_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="WDT_0" propertyId="ABPeripheral.included" value="true"/>
     <property object="WDT_0" propertyId="wdt.watchdogcontrol.wdtenable" value="Disable"/>
   </mode>

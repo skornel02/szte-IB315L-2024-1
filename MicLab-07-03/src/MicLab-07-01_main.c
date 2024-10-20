@@ -54,7 +54,7 @@ enum {
 uint8_t currentNumber = 0;
 uint8_t currentDirection = DIRECITON_RIGHT;
 uint8_t currentButtonState = BUTTON_RELEASED;
-extern volatile incrementHandleStatus = INCREMENT_HANDLED;
+volatile incrementHandleStatus = INCREMENT_HANDLED;
 
 //-----------------------------------------------------------------------------
 // SiLabs_Startup() Routine
