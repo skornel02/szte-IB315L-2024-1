@@ -14,6 +14,7 @@
 #define DecoderB P1_B2
 #define DecoderC P0_B4
 
+// Displays
 enum {
   LED_T1,
   LED_T2,
@@ -22,6 +23,7 @@ enum {
   LED_LEDS
 };
 
+// Leds on display
 enum {
   LED_7 = 1,
   LED_1 = 2,
@@ -31,6 +33,8 @@ enum {
   LED_5 = 32,
   LED_4 = 64,
 };
+
+#define LEDS_TO_ACTIVE ~(LED_1 | LED_7)
 
 //-----------------------------------------------------------------------------
 // SiLabs_Startup() Routine
@@ -46,7 +50,9 @@ void SiLabs_Startup (void)
   // [SiLabs Startup]$
 }
 
-void enable_display(uint8_t display)
+// Enable selected display.
+// Tudom hogy most overkill, de hasznos lehet még
+void select_display(uint8_t display)
 {
   switch (display) {
     case LED_T1:
@@ -83,12 +89,6 @@ void enable_display(uint8_t display)
     default:
       break;
   }
-
-  DispOutEnable = 1;
-}
-
-void disable_display() {
-  DispOutEnable = 0;
 }
 
 void write_to_spi(uint8_t data_to_send) {
@@ -96,9 +96,9 @@ void write_to_spi(uint8_t data_to_send) {
   SPI0DAT = data_to_send;
 
   // Wait until data is sent out
-  while(!SPI0CN0_SPIF) {}
+  while(!SPI0CN0_SPIF);
 
-  SPI0CN0_SPIF = 0;
+  SPI0CN0_SPIF = 1;
 }
 
 //-----------------------------------------------------------------------------
@@ -108,9 +108,8 @@ int main (void)
 {
   // Call hardware initialization routine
   enter_DefaultMode_from_RESET();
-  
-  // Shift register beállítása
-  // Decoder beállítása
+
+  select_display(LED_LEDS);
 
   while (1) 
   {
@@ -118,12 +117,13 @@ int main (void)
     // [Generated Run-time code]$
 
 
-      disable_display();
-      //write to spit
-      write_to_spi(LED_1 & LED_7);
+	  // disable leds
+	  DispOutEnable = 1;
+
+      //write to spi
+      write_to_spi(LEDS_TO_ACTIVE);
 
       //send signal to bit shifter.
-
-      enable_display(LED_LEDS);
+	  DispOutEnable = 0;
   }                             
 }

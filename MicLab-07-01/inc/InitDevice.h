@@ -12,23 +12,16 @@
 // USER PROTOTYPES
 
 // $[Mode Transition Prototypes]
-extern void
-enter_DefaultMode_from_RESET (void);
+extern void enter_DefaultMode_from_RESET(void);
 // [Mode Transition Prototypes]$
 
 // $[Config(Per-Module Mode)Transition Prototypes]
-extern void
-WDT_0_enter_DefaultMode_from_RESET (void);
-extern void
-PORTS_0_enter_DefaultMode_from_RESET (void);
-extern void
-PORTS_1_enter_DefaultMode_from_RESET (void);
-extern void
-PBCFG_0_enter_DefaultMode_from_RESET (void);
-extern void
-SPI_0_enter_DefaultMode_from_RESET (void);
-extern void
-INTERRUPT_0_enter_DefaultMode_from_RESET (void);
+extern void WDT_0_enter_DefaultMode_from_RESET(void);
+extern void PORTS_0_enter_DefaultMode_from_RESET(void);
+extern void PORTS_1_enter_DefaultMode_from_RESET(void);
+extern void PBCFG_0_enter_DefaultMode_from_RESET(void);
+extern void SPI_0_enter_DefaultMode_from_RESET(void);
+extern void INTERRUPT_0_enter_DefaultMode_from_RESET(void);
 // [Config(Per-Module Mode)Transition Prototypes]$
 
 #endif
