@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #include <SI_EFM8BB1_Register_Enums.h>                  // SFR declarations
 #include "InitDevice.h"
+#include <STDIO.H>
 // $[Generated Includes]
 // [Generated Includes]$
 
@@ -48,19 +49,6 @@ void send_string_uart(const char *str)
     }
 }
 
-void sprintf(char* local_buffer, uint16_t num)
-{
-  uint8_t i;
-  for (i = 0; i < NUM_COUNT; i++)
-  {
-    local_buffer[NUM_COUNT - i - 1] = LAST_NUMBER_CHAR - (LAST_NUMBER - (num % BEST_NUMBERRING_SYSTEM_FOR_HUMANS));
-    num = num / BEST_NUMBERRING_SYSTEM_FOR_HUMANS;
-  }
-
-  local_buffer[NUM_COUNT] = '\n';
-  local_buffer[NUM_COUNT + 1] = '\o';
-}
-
 //-----------------------------------------------------------------------------
 // main() Routine
 // ----------------------------------------------------------------------------
@@ -69,7 +57,7 @@ int main (void)
   // Call hardware initialization routine
   enter_DefaultMode_from_RESET();
   
-  sprintf(buffer, MAGIC_NUMBER);
+  sprintf(buffer, "%d\n", MAGIC_NUMBER);
 
   while (1) 
   {
