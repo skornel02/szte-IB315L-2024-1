@@ -54,10 +54,10 @@ int main (void)
     // $[Generated Run-time code]
     // [Generated Run-time code]$
 
-    if (data_to_send_status == UNSENT)
+    if (data_to_send_status == SENT)
     {
       data_to_send = ONBOARD_BTN ? 'o' : 'L';
-      data_to_send_status = SENT;
+      data_to_send_status = UNSENT;
     }
 
     if (data_to_read_status == UNREAD)

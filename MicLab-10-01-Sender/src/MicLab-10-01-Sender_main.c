@@ -44,6 +44,7 @@ int main (void)
 {
   // Call hardware initialization routine
   enter_DefaultMode_from_RESET();
+  SCON0_TI = 1;
   
   while (1) 
   {

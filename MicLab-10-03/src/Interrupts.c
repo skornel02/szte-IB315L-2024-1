@@ -31,14 +31,15 @@ SI_INTERRUPT (UART0_ISR, UART0_IRQn)
   if (SCON0_RI) {
       data_to_read = SBUF0;
       data_to_read_status = UNREAD;
+
+      SCON0_RI = 0;
   }
 
   if (SCON0_TI) {
       SBUF0 = data_to_send;
       data_to_send_status = SENT;
-  }
 
-  SCON0_RI = 0;
-  SCON0_TI = 0;
+      SCON0_TI = 0;
+  }
 }
 

@@ -16,6 +16,7 @@
 #define MAGIC_NUMBER 1234u
 
 static char buffer[UART_BUFFER_SIZE];
+static uint8_t counter = 0;
 
 //-----------------------------------------------------------------------------
 // SiLabs_Startup() Routine
@@ -64,6 +65,14 @@ int main (void)
     // $[Generated Run-time code]
     // [Generated Run-time code]$
 
-    send_string_uart(buffer);
+    while(!TMR2CN0_TF2H);
+    TMR2CN0_TF2H = 0;
+    ++counter;
+
+	if (counter >= 100)
+	{
+	    send_string_uart(buffer);
+	    counter = 0;
+	}
   }                             
 }
