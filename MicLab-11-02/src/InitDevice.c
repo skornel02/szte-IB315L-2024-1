@@ -358,16 +358,16 @@ PCACH_0_enter_DefaultMode_from_RESET (void)
 
   // $[PCA0CPL0 - PCA Channel 0 Capture Module Low Byte]
   /***********************************************************************
-   - PCA Channel 0 Capture Module Low Byte = 0xFF
+   - PCA Channel 0 Capture Module Low Byte = 0x0B
    ***********************************************************************/
-  PCA0CPL0 = (0xFF << PCA0CPL0_PCA0CPL0__SHIFT);
+  PCA0CPL0 = (0x0B << PCA0CPL0_PCA0CPL0__SHIFT);
   // [PCA0CPL0 - PCA Channel 0 Capture Module Low Byte]$
 
   // $[PCA0CPH0 - PCA Channel 0 Capture Module High Byte]
   /***********************************************************************
-   - PCA Channel 0 Capture Module High Byte = 0xFF
+   - PCA Channel 0 Capture Module High Byte = 0x0B
    ***********************************************************************/
-  PCA0CPH0 = (0xFF << PCA0CPH0_PCA0CPH0__SHIFT);
+  PCA0CPH0 = (0x0B << PCA0CPH0_PCA0CPH0__SHIFT);
   // [PCA0CPH0 - PCA Channel 0 Capture Module High Byte]$
 
   // $[Auto-reload]

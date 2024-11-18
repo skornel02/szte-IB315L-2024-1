@@ -71,37 +71,6 @@ WDT_0_enter_DefaultMode_from_RESET (void)
 }
 
 extern void
-PBCFG_0_enter_DefaultMode_from_RESET (void)
-{
-  // $[XBR2 - Port I/O Crossbar 2]
-  /***********************************************************************
-   - Weak Pullups enabled 
-   - Crossbar enabled
-   ***********************************************************************/
-  XBR2 = XBR2_WEAKPUD__PULL_UPS_ENABLED | XBR2_XBARE__ENABLED;
-  // [XBR2 - Port I/O Crossbar 2]$
-
-  // $[PRTDRV - Port Drive Strength]
-  // [PRTDRV - Port Drive Strength]$
-
-  // $[XBR0 - Port I/O Crossbar 0]
-  // [XBR0 - Port I/O Crossbar 0]$
-
-  // $[XBR1 - Port I/O Crossbar 1]
-  /***********************************************************************
-   - CEX0 routed to Port pin
-   - ECI unavailable at Port pin
-   - T0 unavailable at Port pin
-   - T1 unavailable at Port pin
-   - T2 unavailable at Port pin
-   ***********************************************************************/
-  XBR1 = XBR1_PCA0ME__CEX0 | XBR1_ECIE__DISABLED | XBR1_T0E__DISABLED
-      | XBR1_T1E__DISABLED | XBR1_T2E__DISABLED;
-  // [XBR1 - Port I/O Crossbar 1]$
-
-}
-
-extern void
 PORTS_0_enter_DefaultMode_from_RESET (void)
 {
   // $[P0 - Port 0 Pin Latch]
@@ -188,6 +157,122 @@ PORTS_1_enter_DefaultMode_from_RESET (void)
 }
 
 extern void
+PBCFG_0_enter_DefaultMode_from_RESET (void)
+{
+  // $[XBR2 - Port I/O Crossbar 2]
+  /***********************************************************************
+   - Weak Pullups enabled 
+   - Crossbar enabled
+   ***********************************************************************/
+  XBR2 = XBR2_WEAKPUD__PULL_UPS_ENABLED | XBR2_XBARE__ENABLED;
+  // [XBR2 - Port I/O Crossbar 2]$
+
+  // $[PRTDRV - Port Drive Strength]
+  // [PRTDRV - Port Drive Strength]$
+
+  // $[XBR0 - Port I/O Crossbar 0]
+  // [XBR0 - Port I/O Crossbar 0]$
+
+  // $[XBR1 - Port I/O Crossbar 1]
+  /***********************************************************************
+   - CEX0 routed to Port pin
+   - ECI unavailable at Port pin
+   - T0 unavailable at Port pin
+   - T1 unavailable at Port pin
+   - T2 unavailable at Port pin
+   ***********************************************************************/
+  XBR1 = XBR1_PCA0ME__CEX0 | XBR1_ECIE__DISABLED | XBR1_T0E__DISABLED
+      | XBR1_T1E__DISABLED | XBR1_T2E__DISABLED;
+  // [XBR1 - Port I/O Crossbar 1]$
+
+}
+
+extern void
+CLOCK_0_enter_DefaultMode_from_RESET (void)
+{
+  // $[CLKSEL - Clock Select]
+  // [CLKSEL - Clock Select]$
+
+}
+
+extern void
+TIMER01_0_enter_DefaultMode_from_RESET (void)
+{
+  // $[Timer Initialization]
+  //Save Timer Configuration
+  uint8_t TCON_save;
+  TCON_save = TCON;
+  //Stop Timers
+  TCON &= ~TCON_TR0__BMASK & ~TCON_TR1__BMASK;
+
+  // [Timer Initialization]$
+
+  // $[TH0 - Timer 0 High Byte]
+  /***********************************************************************
+   - Timer 0 High Byte = 0x01
+   ***********************************************************************/
+  TH0 = (0x01 << TH0_TH0__SHIFT);
+  // [TH0 - Timer 0 High Byte]$
+
+  // $[TL0 - Timer 0 Low Byte]
+  // [TL0 - Timer 0 Low Byte]$
+
+  // $[TH1 - Timer 1 High Byte]
+  // [TH1 - Timer 1 High Byte]$
+
+  // $[TL1 - Timer 1 Low Byte]
+  // [TL1 - Timer 1 Low Byte]$
+
+  // $[Timer Restoration]
+  //Restore Timer Configuration
+  TCON |= (TCON_save & TCON_TR0__BMASK) | (TCON_save & TCON_TR1__BMASK);
+
+  // [Timer Restoration]$
+
+}
+
+extern void
+TIMER_SETUP_0_enter_DefaultMode_from_RESET (void)
+{
+  // $[CKCON0 - Clock Control 0]
+  /***********************************************************************
+   - System clock divided by 48
+   - Counter/Timer 0 uses the clock defined by the prescale field, SCA
+   - Timer 2 high byte uses the clock defined by T2XCLK in TMR2CN0
+   - Timer 2 low byte uses the clock defined by T2XCLK in TMR2CN0
+   - Timer 3 high byte uses the clock defined by T3XCLK in TMR3CN0
+   - Timer 3 low byte uses the clock defined by T3XCLK in TMR3CN0
+   - Timer 1 uses the clock defined by the prescale field, SCA
+   ***********************************************************************/
+  CKCON0 = CKCON0_SCA__SYSCLK_DIV_48 | CKCON0_T0M__PRESCALE
+      | CKCON0_T2MH__EXTERNAL_CLOCK | CKCON0_T2ML__EXTERNAL_CLOCK
+      | CKCON0_T3MH__EXTERNAL_CLOCK | CKCON0_T3ML__EXTERNAL_CLOCK
+      | CKCON0_T1M__PRESCALE;
+  // [CKCON0 - Clock Control 0]$
+
+  // $[TMOD - Timer 0/1 Mode]
+  /***********************************************************************
+   - Mode 2, 8-bit Counter/Timer with Auto-Reload
+   - Mode 0, 13-bit Counter/Timer
+   - Timer Mode
+   - Timer 0 enabled when TR0 = 1 irrespective of INT0 logic level
+   - Timer Mode
+   - Timer 1 enabled when TR1 = 1 irrespective of INT1 logic level
+   ***********************************************************************/
+  TMOD = TMOD_T0M__MODE2 | TMOD_T1M__MODE0 | TMOD_CT0__TIMER
+      | TMOD_GATE0__DISABLED | TMOD_CT1__TIMER | TMOD_GATE1__DISABLED;
+  // [TMOD - Timer 0/1 Mode]$
+
+  // $[TCON - Timer 0/1 Control]
+  /***********************************************************************
+   - Start Timer 0 running
+   ***********************************************************************/
+  TCON |= TCON_TR0__RUN;
+  // [TCON - Timer 0/1 Control]$
+
+}
+
+extern void
 PCA_0_enter_DefaultMode_from_RESET (void)
 {
   // $[PCA Off]
@@ -230,91 +315,6 @@ PCA_0_enter_DefaultMode_from_RESET (void)
 }
 
 extern void
-TIMER_SETUP_0_enter_DefaultMode_from_RESET (void)
-{
-  // $[CKCON0 - Clock Control 0]
-  /***********************************************************************
-   - External oscillator divided by 8 
-   - Counter/Timer 0 uses the clock defined by the prescale field, SCA
-   - Timer 2 high byte uses the clock defined by T2XCLK in TMR2CN0
-   - Timer 2 low byte uses the clock defined by T2XCLK in TMR2CN0
-   - Timer 3 high byte uses the clock defined by T3XCLK in TMR3CN0
-   - Timer 3 low byte uses the clock defined by T3XCLK in TMR3CN0
-   - Timer 1 uses the clock defined by the prescale field, SCA
-   ***********************************************************************/
-  CKCON0 = CKCON0_SCA__EXTOSC_DIV_8 | CKCON0_T0M__PRESCALE
-      | CKCON0_T2MH__EXTERNAL_CLOCK | CKCON0_T2ML__EXTERNAL_CLOCK
-      | CKCON0_T3MH__EXTERNAL_CLOCK | CKCON0_T3ML__EXTERNAL_CLOCK
-      | CKCON0_T1M__PRESCALE;
-  // [CKCON0 - Clock Control 0]$
-
-  // $[TMOD - Timer 0/1 Mode]
-  /***********************************************************************
-   - Mode 2, 8-bit Counter/Timer with Auto-Reload
-   - Mode 0, 13-bit Counter/Timer
-   - Timer Mode
-   - Timer 0 enabled when TR0 = 1 irrespective of INT0 logic level
-   - Timer Mode
-   - Timer 1 enabled when TR1 = 1 irrespective of INT1 logic level
-   ***********************************************************************/
-  TMOD = TMOD_T0M__MODE2 | TMOD_T1M__MODE0 | TMOD_CT0__TIMER
-      | TMOD_GATE0__DISABLED | TMOD_CT1__TIMER | TMOD_GATE1__DISABLED;
-  // [TMOD - Timer 0/1 Mode]$
-
-  // $[TCON - Timer 0/1 Control]
-  /***********************************************************************
-   - Start Timer 0 running
-   ***********************************************************************/
-  TCON |= TCON_TR0__RUN;
-  // [TCON - Timer 0/1 Control]$
-
-}
-
-extern void
-CLOCK_0_enter_DefaultMode_from_RESET (void)
-{
-  // $[CLKSEL - Clock Select]
-  // [CLKSEL - Clock Select]$
-
-}
-
-extern void
-TIMER01_0_enter_DefaultMode_from_RESET (void)
-{
-  // $[Timer Initialization]
-  //Save Timer Configuration
-  uint8_t TCON_save;
-  TCON_save = TCON;
-  //Stop Timers
-  TCON &= ~TCON_TR0__BMASK & ~TCON_TR1__BMASK;
-
-  // [Timer Initialization]$
-
-  // $[TH0 - Timer 0 High Byte]
-  /***********************************************************************
-   - Timer 0 High Byte = 0x06
-   ***********************************************************************/
-  TH0 = (0x06 << TH0_TH0__SHIFT);
-  // [TH0 - Timer 0 High Byte]$
-
-  // $[TL0 - Timer 0 Low Byte]
-  // [TL0 - Timer 0 Low Byte]$
-
-  // $[TH1 - Timer 1 High Byte]
-  // [TH1 - Timer 1 High Byte]$
-
-  // $[TL1 - Timer 1 Low Byte]
-  // [TL1 - Timer 1 Low Byte]$
-
-  // $[Timer Restoration]
-  //Restore Timer Configuration
-  TCON |= (TCON_save & TCON_TR0__BMASK) | (TCON_save & TCON_TR1__BMASK);
-
-  // [Timer Restoration]$
-
-}
-
-extern void
 PCACH_0_enter_DefaultMode_from_RESET (void)
 {
   // $[PCA0 Settings Save]
@@ -346,7 +346,10 @@ PCACH_0_enter_DefaultMode_from_RESET (void)
   // [PCA0CPL0 - PCA Channel 0 Capture Module Low Byte]$
 
   // $[PCA0CPH0 - PCA Channel 0 Capture Module High Byte]
-  PCA0CPH0 = 0x00;
+  /***********************************************************************
+   - PCA Channel 0 Capture Module High Byte = 0x40
+   ***********************************************************************/
+  PCA0CPH0 = (0x40 << PCA0CPH0_PCA0CPH0__SHIFT);
   // [PCA0CPH0 - PCA Channel 0 Capture Module High Byte]$
 
   // $[Auto-reload]
@@ -354,12 +357,6 @@ PCACH_0_enter_DefaultMode_from_RESET (void)
 
   // $[PCA0 Settings Restore]
   // [PCA0 Settings Restore]$
-
-}
-
-extern void
-INTERRUPT_0_enter_DefaultMode_from_RESET (void)
-{
 
 }
 

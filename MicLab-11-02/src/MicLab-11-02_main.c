@@ -6,7 +6,7 @@
 // $[Generated Includes]
 // [Generated Includes]$
 
-#define SW1 P0_B1
+#define ONBOARD_BTN P0_B2
 #define STEPS 4u
 
 enum {
@@ -29,7 +29,7 @@ enum {
 volatile uint8_t button_status = RELEASED;
 volatile uint8_t led_step_status = HANDLED;
 
-static uint8_t pwm_steps[STEPS] = {255u, 191u, 127u, 63u};
+static uint8_t pwm_steps[STEPS] = {0u, 64u, 128u, 192u};
 static uint8_t current_step = STEP0;
 
 //-----------------------------------------------------------------------------
@@ -54,18 +54,21 @@ int main (void)
   // Call hardware initialization routine
   enter_DefaultMode_from_RESET();
   
+  PCA0CPH0 = pwm_steps[current_step];
+
   while (1) 
   {
     // $[Generated Run-time code]
     // [Generated Run-time code]$
 
-      if (!SW1 && button_status == RELEASED) {
+      if (!ONBOARD_BTN && button_status == RELEASED) {
           button_status = PRESSED;
       }
 
       if (led_step_status == UNHANDLED) {
           current_step = (current_step + 1) % STEPS;
-          PCA0CP0 = pwm_steps[current_step];
+
+          PCA0CPH0 = pwm_steps[current_step];
           led_step_status = HANDLED;
       }
   }                             
