@@ -8,6 +8,8 @@
 
 #define ONBOARD_BTN P0_B2
 #define STEPS 4u
+#define BUTTON_DEBOUNCE 64u
+#define MAGIC_FLAG_OFF 0
 
 enum {
   RELEASED,
@@ -26,8 +28,10 @@ enum {
   STEP75,
 };
 
-volatile uint8_t button_status = RELEASED;
-volatile uint8_t led_step_status = HANDLED;
+static uint8_t button_last_status = RELEASED;
+static uint8_t button_status = RELEASED;
+static uint8_t button_counter = 0;
+static uint8_t led_step_status = HANDLED;
 
 static uint8_t pwm_steps[STEPS] = {0u, 64u, 128u, 192u};
 static uint8_t current_step = STEP0;
@@ -61,11 +65,53 @@ int main (void)
     // $[Generated Run-time code]
     // [Generated Run-time code]$
 
-      if (!ONBOARD_BTN && button_status == RELEASED) {
-          button_status = PRESSED;
+	  if (!ONBOARD_BTN)
+	  {
+		  if (button_last_status == RELEASED)
+		  {
+			  button_last_status = PRESSED;
+		  }
+		  else if (button_counter < BUTTON_DEBOUNCE)
+		  {
+			  ++button_counter;
+		  }
+		  else
+		  {
+			  button_status = PRESSED;
+			  button_counter = 0;
+		  }
+	  }
+	  else
+	  {
+		  if (button_last_status == PRESSED)
+		  {
+			  button_last_status = RELEASED;
+		  }
+		  else if (button_counter < BUTTON_DEBOUNCE)
+		  {
+			  ++button_counter;
+		  }
+		  else
+		  {
+			  button_status = RELEASED;
+			  button_counter = 0;
+		  }
+	  }
+
+      if (button_status == PRESSED)
+      {
+    	  TMR2L = 0;
+    	  TMR2H = 0;
+    	  TMR2CN0_TF2H = MAGIC_FLAG_OFF;
+    	  while(!TMR2CN0_TF2H);
+    	  TMR2CN0_TF2H = MAGIC_FLAG_OFF;
+
+    	  led_step_status = UNHANDLED;
+    	  button_status = RELEASED;
       }
 
-      if (led_step_status == UNHANDLED) {
+      if (led_step_status == UNHANDLED)
+      {
           current_step = (current_step + 1) % STEPS;
 
           PCA0CPH0 = pwm_steps[current_step];
